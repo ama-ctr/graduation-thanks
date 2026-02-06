@@ -17,7 +17,7 @@ def home():
 
     # 3. HTMLの中の「空っぽの鍵置き場」を「本物の鍵」に書き換える
     # (HTML側の 'const apiKey = "";' という部分を探して置き換えます)
-    html_content = html_content.replace('const apiKey = "";', f'const apiKey = "{api_key}";')
+    html_content = html_content.replace('const apiKey = "AIzaSyCjj_mHySzY0qa_qRzHy6Tf1QzaotNXyms";', f'const apiKey = "{api_key}";')
 
     # 4. 完成したHTMLをブラウザに送る
     return render_template_string(html_content)
