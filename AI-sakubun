@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6年生へ おくる ありがとうの てがみ (AI ver)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+
+        body {
+            font-family: 'Kosugi Maru', sans-serif;
+            background-color: #fff5f7; /* 桜色 */
+            color: #4a4a4a;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+            border: 2px solid #ffdae9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d81b60;
+            font-size: 26px;
+            margin-bottom: 5px;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '🌸';
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            font-size: 20px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .step-box {
+            background-color: #fff9fb;
+            border: 2px solid #ffc1d6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .step-number {
+            background-color: #ff85b2;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            font-size: 14px;
+        }
+
+        h3 {
+            margin-top: 5px;
+            font-size: 18px;
+            color: #d81b60;
+        }
+
+        .guide-text {
+            font-size: 14px;
+            color: #666;
+            background-color: #fff0f5;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px dashed #ffc1d6;
+            border-radius: 10px;
+            background-color: #fff;
+            font-family: 'Kosugi Maru', sans-serif;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #d81b60;
+            background-color: #fff;
+        }
+
+        .hint-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* ヒントカード */
+        .hint-card {
+            background-color: #fff;
+            border: 2px solid #fce4ec;
+            border-radius: 10px;
+            width: 145px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .hint-card:hover {
+            transform: scale(1.03);
+            border-color: #ff85b2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .hint-card .img-box {
+            height: 80px;
+            background-color: #fff5f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+        }
+
+        .hint-card p {
+            padding: 6px;
+            font-size: 12px;
+            margin: 0;
+            text-align: center;
+            background-color: #fff;
+            line-height: 1.3;
+        }
+        
+        .hint-tag {
+            background-color: #fce4ec;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #d81b60;
+        }
+        .hint-tag:hover {
+            background-color: #ffc1d6;
+        }
+
+        .emotion-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .emotion-btn {
+            background-color: white;
+            border: 2px solid #ffd1e0;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            width: 110px;
+            transition: all 0.2s;
+        }
+
+        .emotion-btn.selected {
+            border-color: #ff85b2;
+            background-color: #fff0f5;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+
+        .emotion-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .final-draft {
+            background-color: #fffafa;
+            border: 3px double #ffb6c1;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .draft-section {
+            margin-bottom: 25px;
+        }
+
+        .draft-label {
+            display: inline-block;
+            background-color: #ff85b2;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            display: block;
+            width: 240px;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: #ff85b2;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #d81b60;
+        }
+        .btn-main:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background-color: #f06292;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* AI Buttons */
+        .btn-ai {
+            background-color: #9c27b0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #checkMessage {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-size: 14px;
+        }
+        .msg-success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .msg-warning { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+
+        /* Loading Overlay */
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff85b2;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; }
+            .btn-main, .button-group, .hint-tag, .btn-ai, .hint-container, .step-number { display: none; }
+            .step-box { border: 1px solid #eee; padding: 10px; }
+            textarea { border: 1px solid #ccc; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top: 10px; color: #d81b60; font-weight: bold;">AIが メッセージを かんがえています...</p>
+</div>
+
+<div class="container">
+    <h1>6年生へ ありがとう ワークシート</h1>
+    <p class="subtitle">そつぎょうする お兄さん・お姉さんに おくる てがみを つくろう！</p>
+
+    <!-- STEP 1 -->
+    <div class="step-box">
+        <span class="step-number">Step 1</span>
+        <h3>だれに おくる？</h3>
+        <div class="guide-text">
+            ありがとうを つたえたい 6年生の名前を かこう。<br>
+            （例：〇〇班の〇〇さん、〇〇委員会の〇〇先輩）
+        </div>
+        <input type="text" id="who" placeholder="（例）登校班の さくらさん">
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-box">
+        <span class="step-number">Step 2</span>
+        <h3>どんな 思い出が ある？</h3>
+        <div class="guide-text">
+            いっしょに して 楽しかったことや、うれしかったことを おもい出そう。<br>
+            おもい出せないときは、「AIヒント」をおしてみてね。
+        </div>
+        <input type="text" id="what" placeholder="（例）そうじの やり方を やさしく おしえてくれた">
+        
+        <button class="btn-ai" onclick="getGraduationHints()">
+            ✨ 6年生との思い出ヒント
+        </button>
+
+        <div class="hint-container" id="hintContainer">
+            <span class="hint-tag" onclick="setInput('what', '登校班で やさしく こえを かけてくれた')">登校班</span>
+            <span class="hint-tag" onclick="setInput('what', '委員会で おしごとを やさしく おしえてくれた')">委員会</span>
+            <span class="hint-tag" onclick="setInput('what', '昼休みに いっしょに あそんでくれた')">昼休み</span>
+            <span class="hint-tag" onclick="setInput('what', '運動会で いっしょうけんめい 応援してくれた')">運動会</span>
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-box">
+        <span class="step-number">Step 3</span>
+        <h3>あなたの きもちは？</h3>
+        <div class="guide-text">
+            6年生を みていて、どう 思ったかな？
+        </div>
+        <div class="emotion-options">
+            <div class="emotion-btn" onclick="selectEmotion(this, 'かっこよかった')">
+                <span class="emotion-icon">✨</span>
+                かっこよかった
+            </div>
+            <div class="emotion-btn" onclick="selectEmotion(this, 'やさしかった')">
+                <span class="emotion-icon">🌸</span>
+                やさしかった
+            </div>
+            <div class="emotion-btn" onclick="selectEmotion(this, 'あこがれだった')">
+                <span class="emotion-icon">💎</span>
+                あこがれ
+            </div>
+            <div class="emotion-btn" onclick="selectEmotion(this, 'さびしくなるよ')">
+                <span class="emotion-icon">😢</span>
+                さびしい
+            </div>
+        </div>
+        <input type="hidden" id="feeling">
+        <input type="text" id="otherFeeling" style="margin-top:10px" placeholder="（例）じぶんも 〇〇さんのように なりたい" oninput="clearEmotionSelection()">
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-box">
+        <span class="step-number">Step 4</span>
+        <h3>これからの おうえん</h3>
+        <div class="guide-text">
+            中学校に 行く 6年生に、なんて 言いたいかな？
+        </div>
+        <input type="text" id="future" placeholder="（例）中学校でも 勉強や 部活を がんばってね">
+        <div class="hint-container">
+            <span class="hint-tag" onclick="setInput('future', '中学校でも おうえんしています')">おうえん</span>
+            <span class="hint-tag" onclick="setInput('future', '中学校でも 笑顔で がんばってね')">笑顔で</span>
+            <span class="hint-tag" onclick="setInput('future', 'また 学校に あそびに きてね')">あそびにきてね</span>
+        </div>
+    </div>
+
+    <button class="btn-main" onclick="generateLetter()">てがみの 文章を つくる！</button>
+
+    <!-- FINAL OUTPUT -->
+    <div class="final-draft">
+        <h3>✨ できあがった てがみ ✨</h3>
+        
+        <!-- つうじょう版 -->
+        <div class="draft-section">
+            <span class="draft-label">つうじょう版（しっかり）</span>
+            <textarea id="finalText" rows="6" placeholder="ここに文章がはいります。"></textarea>
+        </div>
+
+        <!-- たんしゅく版 -->
+        <div class="draft-section">
+            <span class="draft-label">たんしゅく版（みじかめ）</span>
+            <textarea id="shortText" rows="3" placeholder="ここに短い文章がはいります。"></textarea>
+        </div>
+        
+        <div style="text-align: right; margin-top:10px;">
+            <button class="btn-ai" onclick="polishTextWithAI()">
+                ✨ 魔法のペン (文章を もっと 温かくする)
+            </button>
+        </div>
+
+        <div id="checkMessage"></div>
+
+        <div class="button-group">
+            <button class="btn-secondary" style="background-color:#ff85b2;" onclick="checkText()">👀 チェックする</button>
+            <button class="btn-secondary" style="background-color:#666;" onclick="window.print()">🖨️ 印刷する</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const apiKey = "AIzaSyCjj_mHySzY0qa_qRzHy6Tf1QzaotNXyms"; // Runtime provides the key
+
+    async function callGeminiAPI(userPrompt) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const payload = { contents: [{ parts: [{ text: userPrompt }] }] };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error(`API Error: ${response.status}`);
+            const data = await response.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    async function getGraduationHints() {
+        const who = document.getElementById('who').value || "6年生";
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+
+        const prompt = `
+            あなたは小学校の先生です。下級生が卒業する "${who}" さんに感謝の手紙を書こうとしています。
+            小学校の「登校班」「クラブ」「委員会」「掃除」「行事」などでの具体的で優しいエピソードを3つ考えてください。
+            
+            形式: JSON配列のみ
+            [
+                { "text": "そうじで やり方を やさしく おしえてくれた", "emoji": "🧹" },
+                { "text": "クラブ活動で いっしょに 楽しく あそんでくれた", "emoji": "⚽" },
+                { "text": "登校班で あぶないときに 手を つないでくれた", "emoji": "🎒" }
+            ]
+            ※全てひらがな・カタカナのみで答えてください。
+        `;
+
+        const resultText = await callGeminiAPI(prompt);
+        loadingOverlay.style.display = 'none';
+
+        if (resultText) {
+            try {
+                const cleanJson = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+                const hints = JSON.parse(cleanJson);
+                const container = document.getElementById('hintContainer');
+                
+                hints.forEach(hint => {
+                    const card = document.createElement('div');
+                    card.className = 'hint-card';
+                    card.onclick = () => setInput('what', hint.text);
+                    card.innerHTML = `<div class="img-box">${hint.emoji}</div><p>${hint.text}</p>`;
+                    container.prepend(card);
+                });
+            } catch (e) {
+                console.error("Parse error", e);
+            }
+        }
+    }
+
+    async function polishTextWithAI() {
+        const currentText = document.getElementById('finalText').value;
+        const currentShort = document.getElementById('shortText').value;
+        if (!currentText) return;
+        
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+
+        const prompt = `
+            以下の文章は小学生が卒業生に書いたものです。
+            1. 「つうじょう版」をより温かい表現に直してください。
+            2. 「たんしゅく版」をさらに短く、カードに書きやすい素敵な表現に直してください。
+            
+            JSON形式で返してください：
+            { "long": "...", "short": "..." }
+
+            元文章1: "${currentText}"
+            元文章2: "${currentShort}"
+        `;
+
+        const result = await callGeminiAPI(prompt);
+        loadingOverlay.style.display = 'none';
+        if (result) {
+            try {
+                const data = JSON.parse(result.replace(/```json/g, '').replace(/```/g, '').trim());
+                document.getElementById('finalText').value = data.long;
+                document.getElementById('shortText').value = data.short;
+                showMessage("✨ 魔法のペンで、もっと すてきに なったよ！", "success");
+            } catch(e) {}
+        }
+    }
+
+    function setInput(id, text) {
+        document.getElementById(id).value = text;
+    }
+
+    function selectEmotion(element, text) {
+        document.getElementById('otherFeeling').value = '';
+        document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+        document.getElementById('feeling').value = text;
+    }
+
+    function clearEmotionSelection() {
+        document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+        document.getElementById('feeling').value = '';
+    }
+
+    function generateLetter() {
+        const who = document.getElementById('who').value;
+        const what = document.getElementById('what').value;
+        const feeling = document.getElementById('otherFeeling').value || document.getElementById('feeling').value;
+        const future = document.getElementById('future').value;
+
+        if (!who || !what) {
+            showMessage("名前と 思い出を かいてね！", "warning");
+            return;
+        }
+
+        // つうじょう版
+        let letter = `${who} さんへ\n\n`;
+        letter += `ご卒業おめでとうございます。\n`;
+        letter += `〇〇さんは、いつも ${what}ね。\n`;
+        if (feeling) letter += `そんな 〇〇さんは、わたしにとって ${feeling}な 存在でした。\n`;
+        letter += `今まで 本当に ありがとうございました。\n`;
+        if (future) letter += `中学校でも、${future}！\n`;
+        letter += `ずっと おうえんしています。`;
+
+        // たんしゅく版
+        let short = `${who}さん、卒業おめでとう！\n${what}くれて ありがとう。\n${future}、おうえんしているよ！`;
+
+        document.getElementById('finalText').value = letter;
+        document.getElementById('shortText').value = short;
+        document.getElementById('checkMessage').style.display = 'none';
+    }
+
+    function checkText() {
+        const text = document.getElementById('finalText').value;
+        if (!text) return;
+        
+        const msg = document.getElementById('checkMessage');
+        msg.style.display = 'block';
+        if (text.includes('ありがとう') && text.includes('おめでとう')) {
+            msg.className = 'msg-success';
+            msg.innerHTML = "✅ バッチリ！ とても すてきな てがみだね！";
+            speak(text);
+        } else {
+            msg.className = 'msg-warning';
+            msg.innerHTML = "⚠️ 「おめでとう」や「ありがとう」を いれると もっと よくなるよ！";
+        }
+    }
+
+    function showMessage(html, type) {
+        const msgDiv = document.getElementById('checkMessage');
+        msgDiv.style.display = 'block';
+        msgDiv.innerHTML = html;
+        msgDiv.className = type === 'success' ? 'msg-success' : 'msg-warning';
+    }
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const uttr = new SpeechSynthesisUtterance(text);
+            uttr.lang = 'ja-JP';
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(uttr);
+        }
+    }
+</script>
+
+</body>
+</html>
