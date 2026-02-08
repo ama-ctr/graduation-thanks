@@ -4,7 +4,7 @@ app = Flask(name)
 @app.route('/')
 def home():
 # 1. サーバーにあるHTMLファイルを読み込む
-with open('index.html', 'r', encoding='utf-8') as f:
+    with open('index.html', 'r', encoding='utf-8') as f:
 html_content = f.read()
 ```
 # 2. Renderに設定した「秘密の鍵」を取り出す
