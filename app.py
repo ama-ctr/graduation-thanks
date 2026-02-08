@@ -21,7 +21,7 @@ def home():
         return "エラー: APIキーが設定されていません。RenderのEnvironment Variablesを確認してください。"
 
     # 3. HTMLの中の「空っぽの鍵置き場」を「本物の鍵」に書き換える
-    # 注意: index.htmlの中に 'const apiKey = "";' という文字がそのまま残っている必要があります
+    # 注意: index.htmlの中に 'const apiKey = "AIzaSyCjj_mHySzY0qa_qRzHy6Tf1QzaotNXyms";' という文字がそのまま残っている必要があります
     html_content = html_content.replace('const apiKey = "";', f'const apiKey = "{api_key}";')
 
     # 4. 完成したHTMLをブラウザに送る
