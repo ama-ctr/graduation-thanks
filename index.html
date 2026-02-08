@@ -199,6 +199,21 @@
             margin-top: 30px;
         }
 
+        .draft-section {
+            margin-bottom: 25px;
+        }
+
+        .draft-label {
+            display: inline-block;
+            background-color: #ff85b2;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
         .button-group {
             display: flex;
             justify-content: center;
@@ -285,6 +300,7 @@
             .container { box-shadow: none; border: none; width: 100%; }
             .btn-main, .button-group, .hint-tag, .btn-ai, .hint-container, .step-number { display: none; }
             .step-box { border: 1px solid #eee; padding: 10px; }
+            textarea { border: 1px solid #ccc; height: auto; }
         }
     </style>
 </head>
@@ -381,11 +397,22 @@
     <!-- FINAL OUTPUT -->
     <div class="final-draft">
         <h3>✨ できあがった てがみ ✨</h3>
-        <textarea id="finalText" rows="10" placeholder="ここに 文章が できあがります。"></textarea>
+        
+        <!-- つうじょう版 -->
+        <div class="draft-section">
+            <span class="draft-label">つうじょう版（しっかり）</span>
+            <textarea id="finalText" rows="6" placeholder="ここに文章がはいります。"></textarea>
+        </div>
+
+        <!-- たんしゅく版 -->
+        <div class="draft-section">
+            <span class="draft-label">たんしゅく版（みじかめ）</span>
+            <textarea id="shortText" rows="3" placeholder="ここに短い文章がはいります。"></textarea>
+        </div>
         
         <div style="text-align: right; margin-top:10px;">
             <button class="btn-ai" onclick="polishTextWithAI()">
-                ✨ 魔法のペン (もっと 温かいメッセージに)
+                ✨ 魔法のペン (文章を もっと 温かくする)
             </button>
         </div>
 
@@ -462,22 +489,34 @@
 
     async function polishTextWithAI() {
         const currentText = document.getElementById('finalText').value;
+        const currentShort = document.getElementById('shortText').value;
         if (!currentText) return;
         
         const loadingOverlay = document.getElementById('loadingOverlay');
         loadingOverlay.style.display = 'flex';
 
         const prompt = `
-            以下の文章は、小学生が卒業する6年生に向けて書いた感謝の手紙です。
-            子供らしい素直な表現を保ちつつ、より感動的で温かい、正しい日本語のメッセージに直してください。
-            修正後の本文のみを返してください。
+            以下の文章は小学生が卒業生に書いたものです。
+            1. 「つうじょう版」をより温かい表現に直してください。
+            2. 「たんしゅく版」をさらに短く、カードに書きやすい素敵な表現に直してください。
             
-            元文章: "${currentText}"
+            JSON形式で返してください：
+            { "long": "...", "short": "..." }
+
+            元文章1: "${currentText}"
+            元文章2: "${currentShort}"
         `;
 
-        const polished = await callGeminiAPI(prompt);
+        const result = await callGeminiAPI(prompt);
         loadingOverlay.style.display = 'none';
-        if (polished) document.getElementById('finalText').value = polished.trim();
+        if (result) {
+            try {
+                const data = JSON.parse(result.replace(/```json/g, '').replace(/```/g, '').trim());
+                document.getElementById('finalText').value = data.long;
+                document.getElementById('shortText').value = data.short;
+                showMessage("✨ 魔法のペンで、もっと すてきに なったよ！", "success");
+            } catch(e) {}
+        }
     }
 
     function setInput(id, text) {
@@ -507,6 +546,7 @@
             return;
         }
 
+        // つうじょう版
         let letter = `${who} さんへ\n\n`;
         letter += `ご卒業おめでとうございます。\n`;
         letter += `〇〇さんは、いつも ${what}ね。\n`;
@@ -515,7 +555,12 @@
         if (future) letter += `中学校でも、${future}！\n`;
         letter += `ずっと おうえんしています。`;
 
+        // たんしゅく版
+        let short = `${who}さん、卒業おめでとう！\n${what}くれて ありがとう。\n${future}、おうえんしているよ！`;
+
         document.getElementById('finalText').value = letter;
+        document.getElementById('shortText').value = short;
+        document.getElementById('checkMessage').style.display = 'none';
     }
 
     function checkText() {
@@ -526,7 +571,7 @@
         msg.style.display = 'block';
         if (text.includes('ありがとう') && text.includes('おめでとう')) {
             msg.className = 'msg-success';
-            msg.innerHTML = "✅ とても すてきな 卒業お祝いメッセージだね！";
+            msg.innerHTML = "✅ バッチリ！ とても すてきな てがみだね！";
             speak(text);
         } else {
             msg.className = 'msg-warning';
