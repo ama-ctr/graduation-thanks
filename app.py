@@ -3,7 +3,7 @@ import os
 app = Flask(name)
 @app.route('/')
 def home():
-with open('index.html', 'r', encoding='utf-8') as f:
+    with open('index.html', 'r', encoding='utf-8') as f:
     html_content = f.read()
 ```
 api_key = os.environ.get('GEMINI_API_KEY')
